@@ -23,9 +23,6 @@ dev = [
   "tox-pyenv",
 ]
 
-[tool.setuptools.packages.find]
-include = ["spanreed"]
-
 [project.scripts]
 spanreed-consumer = "spanreed.commands:spanreed_consumer"
 spanreed-requeue = "spanreed.commands:requeue_dead_letter"

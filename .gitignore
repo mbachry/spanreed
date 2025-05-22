@@ -1,4 +1,6 @@
 .coverage
 .direnv/
 htmlcov/
+dist/
+spanreed.egg-info/
 uv.lock
