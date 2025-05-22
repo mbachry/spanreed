@@ -1,0 +1,18 @@
+name: pytest
+
+on:
+  pull_request:
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: 3.13
+      - name: Install Python dependencies
+        run: uv export --all-extras | python -m pip install -r /dev/stdin
+        run: python -m pip install -e .
+      - name: Run tests
+        run: pytest -vv --tb=short
