@@ -1,0 +1,4 @@
+.coverage
+.direnv/
+htmlcov/
+uv.lock
