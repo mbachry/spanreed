@@ -13,6 +13,7 @@ jobs:
           python-version: 3.13
       - name: Install Python dependencies
         run: uv export --all-extras | python -m pip install -r /dev/stdin
+      - name: Install package
         run: python -m pip install -e .
       - name: Run tests
         run: pytest -vv --tb=short
