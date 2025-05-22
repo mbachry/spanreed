@@ -12,7 +12,10 @@ jobs:
         with:
           python-version: 3.13
       - uses: astral-sh/setup-uv@v6
-      - uses: supercharge/redis-github-action@1.7.0
+      - name: Install redis
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y redis
       - name: Install Python dependencies
         run: uv export --all-extras | python -m pip install -r /dev/stdin
       - name: Install package
