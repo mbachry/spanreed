@@ -1,4 +1,5 @@
 import importlib
+from contextlib import suppress
 
 from django.conf import settings
 from django.core.management.base import BaseCommand
@@ -20,10 +21,8 @@ class Command(BaseCommand):
     @staticmethod
     def import_all_tasks():
         for app in settings.INSTALLED_APPS:
-            try:
+            with suppress(ModuleNotFoundError):
                 importlib.import_module(f'{app}.tasks')
-            except ModuleNotFoundError:
-                pass
 
     def handle(self, *args, **options):
         self.import_all_tasks()

@@ -42,7 +42,7 @@ class SpanreedPublishMock(mock.MagicMock):
         assert not self._message_published(msg_type, data), self._error_message()
 
 
-@pytest.fixture()
+@pytest.fixture
 def mock_spanreed_publish() -> Generator[SpanreedPublishMock, None, None]:
     """
     A pytest fixture that mocks publisher and lets you verify that your test publishes appropriate messages.

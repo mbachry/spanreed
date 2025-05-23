@@ -37,7 +37,10 @@ def fetch_and_process_messages(
     be = get_backend()
 
     for message in be.receive_messages(
-        queue_type, num_messages=num_messages, wait_timeout_s=WAIT_TIME_SECONDS, visibility_timeout=visibility_timeout
+        queue_type,
+        num_messages=num_messages,
+        wait_timeout_s=WAIT_TIME_SECONDS,
+        visibility_timeout=visibility_timeout,
     ):
         settings.SPANREED_PRE_PROCESS_HOOK(message=message)
 
@@ -52,7 +55,7 @@ def fetch_and_process_messages(
                 be.ack(message.metadata)
             except Exception:
                 logger.exception('Exception while acking message')
-        except Exception:
+        except Exception:  # noqa: S110
             # already logged in message_handler
             pass
 

@@ -10,12 +10,8 @@ class IgnoreException(Exception):
     Indicates that this task should be ignored.
     """
 
-    pass
-
 
 class ConfigurationError(Exception):
     """
     There was some problem with settings
     """
-
-    pass

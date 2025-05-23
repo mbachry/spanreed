@@ -65,7 +65,7 @@ def test_receive_messages(message):
         message.data.publish()
 
     received_messages = list(
-        be.receive_messages(message.metadata.queue_type, num_messages, wait_timeout_s=0, visibility_timeout=5)
+        be.receive_messages(message.metadata.queue_type, num_messages, wait_timeout_s=0, visibility_timeout=5),
     )
 
     assert [m.data.model_dump_json() for m in received_messages] == [message.data.model_dump_json()] * num_messages
@@ -75,7 +75,7 @@ def test_receive_messages(message):
     assert len(cg_stream.pending()) == 3
 
     assert not list(
-        be.receive_messages(message.metadata.queue_type, num_messages, wait_timeout_s=0, visibility_timeout=5)
+        be.receive_messages(message.metadata.queue_type, num_messages, wait_timeout_s=0, visibility_timeout=5),
     )
 
 
@@ -87,7 +87,7 @@ def test_receive_messages_task(task_message):
         publish(task_message)
 
     received_messages = list(
-        be.receive_messages(task_message.metadata.queue_type, num_messages, wait_timeout_s=0, visibility_timeout=0)
+        be.receive_messages(task_message.metadata.queue_type, num_messages, wait_timeout_s=0, visibility_timeout=0),
     )
 
     assert [m.model_dump_json() for m in received_messages] == [task_message.model_dump_json()] * num_messages
@@ -103,7 +103,7 @@ def test_receive_messages_bad_json(message):
     stream.add({'message': 'foo'})
 
     received_messages = list(
-        be.receive_messages(message.metadata.queue_type, 1, wait_timeout_s=0, visibility_timeout=0)
+        be.receive_messages(message.metadata.queue_type, 1, wait_timeout_s=0, visibility_timeout=0),
     )
     assert not received_messages
 
@@ -120,7 +120,7 @@ def test_receive_messages_bad_data(message):
     stream.add({'message': message.model_dump_json()})
 
     received_messages = list(
-        be.receive_messages(message.metadata.queue_type, 1, wait_timeout_s=0, visibility_timeout=0)
+        be.receive_messages(message.metadata.queue_type, 1, wait_timeout_s=0, visibility_timeout=0),
     )
     assert not received_messages
 
@@ -134,7 +134,7 @@ def test_ack(message):
     message.data.publish()
 
     received_messages = list(
-        be.receive_messages(message.metadata.queue_type, 1, wait_timeout_s=0, visibility_timeout=0)
+        be.receive_messages(message.metadata.queue_type, 1, wait_timeout_s=0, visibility_timeout=0),
     )
     assert len(received_messages) == 1
 
@@ -150,13 +150,13 @@ def test_visibility_timeout_default(message):
     message.data.publish()
 
     received_messages = list(
-        be.receive_messages(message.metadata.queue_type, 1, wait_timeout_s=0, visibility_timeout=0)
+        be.receive_messages(message.metadata.queue_type, 1, wait_timeout_s=0, visibility_timeout=0),
     )
     assert len(received_messages) == 1
 
     # should be visible again immediately
     received_messages = list(
-        be.receive_messages(message.metadata.queue_type, 1, wait_timeout_s=0, visibility_timeout=0)
+        be.receive_messages(message.metadata.queue_type, 1, wait_timeout_s=0, visibility_timeout=0),
     )
     assert len(received_messages) == 1
 
@@ -167,13 +167,13 @@ def test_visibility_timeout_custom(task_message):
     publish(task_message)
 
     received_messages = list(
-        be.receive_messages(task_message.metadata.queue_type, 1, wait_timeout_s=0, visibility_timeout=None)
+        be.receive_messages(task_message.metadata.queue_type, 1, wait_timeout_s=0, visibility_timeout=None),
     )
     assert len(received_messages) == 1
 
     # should be visible again immediately
     received_messages = list(
-        be.receive_messages(task_message.metadata.queue_type, 1, wait_timeout_s=0, visibility_timeout=None)
+        be.receive_messages(task_message.metadata.queue_type, 1, wait_timeout_s=0, visibility_timeout=None),
     )
     assert len(received_messages) == 1
 
@@ -189,13 +189,13 @@ def test_dlq(message, settings):
 
     for _ in range(settings.SPANREED_REDIS_DLQ_MAX_UNACKED + 1):
         received_messages = list(
-            be.receive_messages(message.metadata.queue_type, 1, wait_timeout_s=0, visibility_timeout=0)
+            be.receive_messages(message.metadata.queue_type, 1, wait_timeout_s=0, visibility_timeout=0),
         )
         assert len(received_messages) == 1
         assert len(dlq_stream) == 0
 
     received_messages = list(
-        be.receive_messages(message.metadata.queue_type, 1, wait_timeout_s=0, visibility_timeout=0)
+        be.receive_messages(message.metadata.queue_type, 1, wait_timeout_s=0, visibility_timeout=0),
     )
     assert len(received_messages) == 0
     assert len(dlq_stream) == 1
@@ -215,7 +215,7 @@ def test_requeue_dead_letter(message):
     assert len(dlq_stream) == 0
 
     received_messages = list(
-        be.receive_messages(message.metadata.queue_type, 1, wait_timeout_s=0, visibility_timeout=None)
+        be.receive_messages(message.metadata.queue_type, 1, wait_timeout_s=0, visibility_timeout=None),
     )
     assert len(received_messages) == 1
 

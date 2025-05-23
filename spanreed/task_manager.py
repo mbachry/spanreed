@@ -28,7 +28,9 @@ class Task(BaseModel):
 
     def dispatch(self, *args, **kwargs) -> None:
         meta = Metadata(
-            type='_task_dispatched', queue_type=self.queue_type, visibility_timeout_s=self.visibility_timeout_s
+            type='_task_dispatched',
+            queue_type=self.queue_type,
+            visibility_timeout_s=self.visibility_timeout_s,
         )
         message = Message(data=TaskDispatch(task=self.name, args=args, kwargs=kwargs), metadata=meta)
         publish(message)
@@ -52,7 +54,10 @@ def find_by_queue_type(queue_type: QueueType) -> list[Task]:
 
 
 def task(
-    *args, queue_type: QueueType = QueueType.task, name: str = None, visibility_timeout_s: int = None
+    *args,
+    queue_type: QueueType = QueueType.task,
+    name: str = None,
+    visibility_timeout_s: int = None,
 ) -> typing.Callable:
     from spanreed.conf import settings
     from spanreed.task_manager import ALL_TASKS
@@ -65,7 +70,10 @@ def task(
             raise ConfigurationError(f'Task named "{task_name}" already exists: {func.__module__}.{func.__name__}')
 
         fn.task = settings.SPANREED_TASK_CLASS(
-            fn=fn, name=task_name, queue_type=queue_type, visibility_timeout_s=visibility_timeout_s
+            fn=fn,
+            name=task_name,
+            queue_type=queue_type,
+            visibility_timeout_s=visibility_timeout_s,
         )
         fn.dispatch = fn.task.dispatch
         ALL_TASKS[fn.task.name] = fn.task

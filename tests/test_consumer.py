@@ -19,7 +19,9 @@ def test_handle_message(mock_handler, message):
 def test_handle_task(mock_task, task_message):
     message_handler(task_message)
     mock_task.assert_called_once_with(
-        *task_message.data.args, **task_message.data.kwargs, metadata=task_message.metadata
+        *task_message.data.args,
+        **task_message.data.kwargs,
+        metadata=task_message.metadata,
     )
 
 
@@ -38,8 +40,7 @@ class TestMessageHandler:
         mock_call_task.side_effect = RetryException
         with pytest.raises(mock_call_task.side_effect), mock.patch.object(consumer.logger, 'info') as logging_mock:
             message_handler(message)
-
-            logging_mock.assert_called_once()
+        logging_mock.assert_called_once()
 
     def test_special_handling_ignore_exception(self, mock_call_task, message):
         mock_call_task.side_effect = IgnoreException
@@ -160,5 +161,5 @@ class TestListenForMessages:
 
         assert mock_fetch_and_process.call_count == 2
         mock_fetch_and_process.assert_has_calls(
-            [mock.call(QueueType.task, num_messages=num_messages, visibility_timeout=visibility_timeout_s)]
+            [mock.call(QueueType.task, num_messages=num_messages, visibility_timeout=visibility_timeout_s)],
         )

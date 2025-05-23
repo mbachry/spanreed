@@ -21,7 +21,7 @@ def test_plugin(testdir, settings):
         @pytest.fixture(name='other_message_data')
         def _other_message_data():
             return MessageFactory.build(metadata__type='tests.models.UserCreated')
-    """
+    """,
     )
 
     # create a temporary pytest test file
@@ -50,7 +50,7 @@ def test_plugin(testdir, settings):
         def test_mock_spanreed_publish_published_without_checking_data(mock_spanreed_publish, message):
             message.data.publish()
             mock_spanreed_publish.assert_message_published(message.metadata.type)
-    """
+    """,
     )
 
     # run all tests with pytest

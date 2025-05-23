@@ -156,7 +156,11 @@ class RedisBackend:
                 logger.warning('Received invalid message', extra={'message_body': payload})
 
     def _receive_unacked_messages(
-        self, cg: walrus.ConsumerGroup, queue_type: QueueType, num_messages: int, visibility_timeout: int
+        self,
+        cg: walrus.ConsumerGroup,
+        queue_type: QueueType,
+        num_messages: int,
+        visibility_timeout: int,
     ):
         for stream_name in get_topics(queue_type):
             stream = get_consumer_group_stream(cg, stream_name)
@@ -184,9 +188,7 @@ class RedisBackend:
                     stream.ack(msg_id)
                     stream.delete(msg_id)
 
-    def requeue_dead_letter(
-        self, queue_type: QueueType, num_messages: int = 10, visibility_timeout: int = None
-    ) -> None:
+    def requeue_dead_letter(self, queue_type: QueueType, num_messages: int = 10) -> None:
         db = get_redis_client()
 
         for stream_name in get_topics(queue_type):

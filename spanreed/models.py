@@ -91,6 +91,6 @@ def accepts_metadata_param(func) -> str:
         # since function can always inspect arg names
         if p.kind == inspect.Parameter.VAR_KEYWORD:
             return 'metadata'
-        elif p.annotation is Metadata:
+        if p.annotation is Metadata:
             return p.name
     return None

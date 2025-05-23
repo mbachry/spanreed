@@ -27,5 +27,7 @@ def requeue_dead_letter():
 def spanreed_consumer():
     args = get_args()
     listen_for_messages(
-        queue_type=args.queue_type, num_messages=args.num_messages, visibility_timeout_s=args.visibility_timeout
+        queue_type=args.queue_type,
+        num_messages=args.num_messages,
+        visibility_timeout_s=args.visibility_timeout,
     )
